@@ -1,38 +1,26 @@
-version: "3.8"
+version: "3"
 
 services:
-  db:
-    image: mysql:5.7
-    restart: always
+  wordpress:
+    image: wordpress:latest
+    ports:
+      - "80:80"
+    volumes:
+      - "/var/www/html:/var/www/html"
+    links:
+      - mysql
+  mysql:
+    image: mysql:latest
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: wordpress
       MYSQL_USER: wordpress
       MYSQL_PASSWORD: password
     volumes:
-      - db_data:/var/lib/mysql
-
-  wordpress:
-    image: wordpress:latest
-    restart: always
-    depends_on:
-      - db
-    environment:
-      WORDPRESS_DB_HOST: db:3306
-      WORDPRESS_DB_USER: wordpress
-      WORDPRESS_DB_PASSWORD: password
-      WORDPRESS_DB_NAME: wordpress
-    volumes:
-      - wordpress_data:/var/www/html
-
+      - "/var/lib/mysql:/var/lib/mysql"
   taincan:
-    image: taincan/taincan:latest
-    restart: always
+    image: taincan/wordpress-plugin:latest
     depends_on:
       - wordpress
-    volumes:
-      - wordpress_data:/var/www/html
-
-volumes:
-  db_data:
-  wordpress_data:
+    links:
+      - wordpress
