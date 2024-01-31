@@ -18,9 +18,4 @@ services:
       MYSQL_PASSWORD: password
     volumes:
       - "/var/lib/mysql:/var/lib/mysql"
-  tainacan:
-    image: tainacan/wordpress-plugin:latest
-    depends_on:
-      - wordpress
-    links:
-      - wordpress
+  
