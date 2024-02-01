@@ -26,18 +26,27 @@ services:
       WORDPRESS_DB_NAME: wordpress
     volumes:
       - ./wp-content:/var/www/html/wp-content
+    command: ["wp", "core", "download", "--allow-root"]
 
   tainacan:
     depends_on:
+      - db
       - wordpress
-    image: tainacan/wordpress:latest
+    image: wordpress:cli
     restart: always
     environment:
-      TAINACAN_DATABASE_HOST: db
-      TAINACAN_DATABASE_NAME: wordpress
-      TAINACAN_DATABASE_USER: wordpress
-      TAINACAN_DATABASE_PASSWORD: wordpress
-      TAINACAN_WP_URL: http://wordpress
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+    volumes:
+      - ./wp-content:/var/www/html/wp-content
+    command: >
+      /bin/sh -c "
+      wp plugin install tainacan --activate --allow-root
+      wp plugin activate tainacan --allow-root
+      sleep 5
+      "
 
 volumes:
   db_data:
