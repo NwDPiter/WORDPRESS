@@ -27,3 +27,9 @@ services:
 
 volumes:
   db_data:
+
+RUN: apt update
+RUN: cd /usr/local/bin
+RUN: curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+RUN: mv wp-cli.phar wp
+RUN: chmod  +x  wp
