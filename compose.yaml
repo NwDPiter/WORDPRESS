@@ -1,6 +1,28 @@
 version: '3.7'
 
 services:
+  wordpress:
+    image: wordpress:latest
+    ports:
+      - "80:80"
+    depends_on:
+      - db
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+    volumes:
+      - ./wp-content:/var/www/html/wp-content
+    command: >
+      bash -c '
+      curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
+      chmod +x wp-cli.phar && \
+      mv wp-cli.phar /usr/local/bin/wp && \
+      wp plugin install tainacan --activate && \
+      apache2-foreground
+      '
+
   db:
     image: mysql:5.7
     volumes:
@@ -12,24 +34,5 @@ services:
       MYSQL_USER: wordpress
       MYSQL_PASSWORD: wordpress
 
-  wordpress:
-    depends_on:
-      - db
-    image: wordpress:latest
-    ports:
-      - "80:80"
-    restart: always
-    environment:
-      WORDPRESS_DB_HOST: db:3306
-      WORDPRESS_DB_USER: wordpress
-      WORDPRESS_DB_PASSWORD: wordpress
-      WORDPRESS_DB_NAME: wordpress
-
 volumes:
   db_data:
-
-RUN: apt update
-RUN: cd /usr/local/bin
-RUN: curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-RUN: mv wp-cli.phar wp
-RUN: chmod  +x  wp
