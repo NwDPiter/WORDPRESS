@@ -1,6 +1,8 @@
 # Use a imagem base do WordPress
 FROM wordpress:latest
 
+LABEL name = "WordPress/Tainacan"
+
 # Instale o WP-CLI para gerenciar o WordPress via linha de comando
 RUN apt-get update && apt-get install -y less \
     && rm -rf /var/lib/apt/lists/* \
@@ -9,4 +11,4 @@ RUN apt-get update && apt-get install -y less \
     && mv wp-cli.phar /usr/local/bin/wp
 
 # Instale e ative o plugin Tainacan usando o WP-CLI
-RUN wp plugin install tainacan --activate
+RUN sudo -u debian -i --wp plugin install tainacan --activate
