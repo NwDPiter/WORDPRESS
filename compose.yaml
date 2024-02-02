@@ -6,6 +6,7 @@ services:
     ports:
       - "80:80"
     depends_on:
+      - apache
       - db
     environment:
       WORDPRESS_DB_HOST: db:3306
@@ -22,6 +23,14 @@ services:
       wp plugin install tainacan --activate && \
       apache2-foreground
       '
+
+  apache:
+    image: httpd:2.4
+    ports:
+      - "8080:80"
+    volumes:
+      - ./apache-config:/usr/local/apache2/conf
+      - ./html:/usr/local/apache2/htdocs
 
   db:
     image: mysql:5.7
