@@ -15,7 +15,8 @@ services:
       MYSQL_PASSWORD: wordpress
 
   wordpress:
-    image: wordpressdevelop/cli:latest
+    build:
+      context: .
     ports:
       - "80:80"
     restart: always
