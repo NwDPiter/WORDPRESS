@@ -2,7 +2,7 @@
 FROM wordpressdevelop/cli:latest
 
 # COPiadno tainacan
-COPY /tainanca.zip /home/root
+COPY root/WORDPRESS/tainanca.zip /home/root
 
 # Instale e ative o plugin Tainacan
 RUN wp plugin install tainacan.zip --activate --path=/home/root
