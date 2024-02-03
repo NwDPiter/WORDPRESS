@@ -1,5 +1,4 @@
 # LOGIN PHPMYADMIN
 
-
   USUÁRIO: root
   SENHA: root
