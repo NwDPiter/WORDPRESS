@@ -15,7 +15,7 @@ services:
   wordpress:
     depends_on:
       - db
-    image: wordpressdevelop/cli:latest
+    image: wordpress:latest
     ports:
       - "80:80"
     restart: always
@@ -37,37 +37,11 @@ volumes:
 # NOVA IMAGEM
 
 
-version: '3.7'
-
-services:
-  db:
-    image: mysql:5.7
-    volumes:
-      - db_data:/var/lib/mysql
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: example
-      MYSQL_DATABASE: wordpress
-      MYSQL_USER: wordpress
-      MYSQL_PASSWORD: wordpress
-
-  wordpress_cli:
-    image: wordpressdevelop/cli
-    volumes:
-      - .:/var/www/html
-    depends_on:
-      - db
-    working_dir: /var/www/html
-    entrypoint: ["tail", "-f", "/dev/null"]  # Mantém o contêiner em execução
-
-volumes:
-  db_data:
 
 
 
 
-
-#TESTE 2
+# TESTE 2
 
 
 version: '3.7'
