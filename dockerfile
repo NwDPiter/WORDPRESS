@@ -12,7 +12,7 @@ RUN curl -o /usr/local/bin/wp https://raw.githubusercontent.com/wp-cli/builds/gh
     && chmod +x /usr/local/bin/wp
 
 # Instale e ative o plugin Tainacan
-RUN wp plugin install tainacan --activate
+RUN wp plugin install tainacan --activate --path=/var/www/html --allow-root
 
 # Defina o ponto de entrada padrão para o contêiner
 ENTRYPOINT ["docker-entrypoint.sh"]
