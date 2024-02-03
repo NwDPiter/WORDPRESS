@@ -1,8 +1,11 @@
 # Use a imagem oficial do WordPress como base
 FROM wordpressdevelop/cli:latest
 
+# COPiadno tainacan
+COPY /tainanca.zip /home/root
+
 # Instale e ative o plugin Tainacan
-RUN wp plugin install tainacan.zip --activate --allow-root
+RUN wp plugin install tainacan.zip --activate --path=/home/root
 
 # Defina o ponto de entrada padrão para o contêiner
 ENTRYPOINT ["docker-entrypoint.sh"]
