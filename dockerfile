@@ -5,7 +5,7 @@ FROM wordpressdevelop/cli:latest
 COPY tainacan.zip /app/
 
 # Instale e ative o plugin Tainacan usando o WP-CLI
-RUN wp plugin install /app/tainacan.zip --activate --path=/var/www/html --allow-root
+RUN wp plugin install /app/tainacan.zip --activate  --allow-root
 
 # Defina o ponto de entrada padrão para o contêiner
 ENTRYPOINT ["docker-entrypoint.sh"]
