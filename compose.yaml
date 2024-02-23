@@ -1,74 +1,31 @@
-version: '3.5'
+version: '3.7'
+
+services:
+  wordpress:
+    image: wordpress:latest
+    ports:
+      - "80:80"
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+    volumes:
+      - ./plugins:/var/www/html/wp-content/plugins
+    depends_on:
+      - db
+
+  db:
+    image: mysql:5.7
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: wordpress
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
 
 volumes:
-    pesquisa_www:
-        driver: local
-        driver_opts:
-          type: nfs
-          o: nfsvers=4,addr=10.10.10.100,rw
-          device: ":/NFS_VOL/HDD/pesquisa"
-    
-services:
-  tainacan:
-    image: tainacan/php:7.4-fpm-apache
-    networks:
-      - traefik_proxy
-    secrets:  
-      - pesquisa_db_pass
-    environment:
-      SKIP_WP_INSTALL: "true"
-      #site config:
-      SITE_LANGUAGE: pt_BR
-      SITE_URL: https://pesquisa.tainacan.org
-      SITE_TITLE: Pesquisa
-      SITE_ADMIN_USER: tainacan
-      SITE_ADMIN_EMAIL: tainacan@tainacan.org
-      SITE_ADMIN_PASSWORD: tainacan
-      #wordpress config:
-      DBNAME: 
-      DB_USER: 
-      DB_PSWD: 
-      DB_HOST: 
-      #APACHE,PHP,FPM config
-      PHP_POST_MAX_SIZE: "200M"
-      PHP_UPLOAD_MAX_FILE_SIZE: "200M"
-      PHP_MAX_EXECUTION_TIME: "900"
-      PHP_MEMORY_LIMIT: "1024M"
-      PHP_POOL_NAME: "www"
-      PHP_DATE_TIMEZONE: "UTC"
-      PHP_DISPLAY_ERRORS: "On"
-      PHP_ERROR_REPORTING: "E_ALL & ~E_DEPRECATED & ~E_STRICT"
-      PHP_PM_CONTROL: ondemand
-      PHP_PM_MAX_CHILDREN: "20"
-      PHP_PM_START_SERVERS: "2"
-      PHP_PM_MIN_SPARE_SERVERS: "1"
-      PHP_PM_MAX_SPARE_SERVERS: "3"
-      MSMTP_RELAY_SERVER_HOSTNAME: "mailhog"
-      MSMTP_RELAY_SERVER_PORT: "1025"
-      APACHE_DOCUMENT_ROOT: "/var/www/html/public"
-      APACHE_START_SERVERS: "2"
-      APACHE_MIN_SPARE_THREADS: "10"
-      APACHE_MAX_SPARE_THREADS: "75"
-      APACHE_THREAD_LIMIT: "64"
-      APACHE_THREADS_PER_CHILD: "25"
-      APACHE_MAX_REQUEST_WORKERS: "150"
-      APACHE_MAX_CONNECTIONS_PER_CHILD: "12"
-      APACHE_RUN_USER: "webuser"
-      APACHE_RUN_GROUP: "webgroup"
-
-    deploy:
-      labels:
-          - traefik.enable=true
-          - traefik.docker.network=traefik_proxy
-          - traefik.constraint-label=traefik-public
-
-          - traefik.http.routers.wppesquisa-http.rule=Host(`pesquisa.tainacan.org`)
-          - traefik.http.routers.wppesquisa-http.entrypoints=http
-          - traefik.http.routers.wppesquisa-http.middlewares=https-redirect
-          - traefik.http.routers.wppesquisa-https.rule=Host(`pesquisa.tainacan.org`)
-          - traefik.http.routers.wppesquisa-https.entrypoints=https
-          - traefik.http.routers.wppesquisa-https.tls=true
-          - traefik.http.routers.wppesquisa-https.tls.certresolver=le
-          - traefik.http.services.wppesquisa.loadbalancer.server.port=80
-    volumes:
-      - pesquisa_www:/var/www/html/
+  db_data:
