@@ -28,7 +28,7 @@ jobs:
       run: sleep 30s
 
     - name: Run tests
-      run: docker-compose -f compose.yaml exec -T wordpress-container-name wp plugin list
+      run: curl -o http://localhost
 
     - name: Tear down Docker Compose
       run: docker-compose -f compose.yaml down
