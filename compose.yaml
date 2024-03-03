@@ -29,9 +29,7 @@ services:
      volumes:
        - ./wp-content:/var/www/html/wp-content
        - ./plugins:/var/www/html/wp-content/plugins
-       - ./entrypoint.sh:/usr/local/bin/entrypoint.sh
-     entrypoint: ["/bin/bash", "/usr/local/bin/entrypoint.sh"]
-
+   
    phpmyadmin:
      depends_on:
        - db
