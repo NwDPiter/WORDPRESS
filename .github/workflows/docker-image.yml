@@ -1,4 +1,4 @@
-name: Docker Compose Testing
+name: WordPress Docker Compose Testing
 
 on:
   push:
@@ -24,8 +24,11 @@ jobs:
     - name: Set up Docker Compose
       run: docker-compose -f compose.yaml up -d
 
+    - name: Wait for services to initialize
+      run: sleep 30s
+
     - name: Run tests
-      run: docker-compose -f compose.yaml exec -T web npm test
+      run: docker-compose -f compose.yaml exec -T wordpress-container-name wp plugin list
 
     - name: Tear down Docker Compose
       run: docker-compose -f compose.yaml down
