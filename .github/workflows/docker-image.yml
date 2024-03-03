@@ -23,10 +23,7 @@ jobs:
 
     - name: Set up Docker Compose
       run: docker-compose -f compose.yaml up -d
-
-    - name: Wait for services to initialize
-      run: sleep 30s
-
+      
     - name: Run tests
       run: curl -o http://localhost
 
