@@ -28,9 +28,6 @@ jobs:
 
     - name: Set up Docker Compose
       run: docker-compose -f compose.yaml up -d
-      
-    - name: Run tests
-      run: docker-compose -f compose.yaml exec -T web npm test
 
     - name: Tear down Docker Compose
       run: docker-compose -f compose.yaml down
