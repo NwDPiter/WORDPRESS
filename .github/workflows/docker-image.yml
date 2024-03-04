@@ -30,7 +30,7 @@ jobs:
       run: docker-compose -f compose.yaml up -d
       
     - name: Run tests
-      run: docker-compose -f path/to/your/docker-compose.yml exec -T web npm test
+      run: docker-compose -f compose.yaml exec -T web npm test
 
     - name: Tear down Docker Compose
       run: docker-compose -f compose.yaml down
